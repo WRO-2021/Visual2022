@@ -2,10 +2,12 @@ import pickle
 import threading
 import cv2
 import sys
+import serial
 sys.path.append('../ocr/photos/')
 from ImageFromCamera import capture
 from checCameras import returnCameraIndexes
 
+arduino = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=.1)
 # left and right
 # 's', 'h', 'u', 'red'...
 letter_reading = ['_', '_']
@@ -20,17 +22,25 @@ def take_picture_and_check():
     global mutex
     global model
 
+    print('starting thread')
+
     camera_indexes = returnCameraIndexes()
+    print(camera_indexes)
     capLeft = cv2.VideoCapture(camera_indexes[0])
     capRight = cv2.VideoCapture(camera_indexes[1])
+
+    print('starting image loop')
     while True:
         try:
             images = [capture(capLeft), capture(capRight)]
+            letters = input("dimmi il lato: ")#[1 for output in images]
+            print('captured')
             with mutex:
-                letter_reading = ['red' for letter in letters]
+                letter_reading = input("dimmi cosa vedi: ")#['red' for letter in letters]
         except KeyboardInterrupt:
             break
         if(run_event.is_set()):
+            print('exiting from thread photos')
             break
 
     capLeft.release()
@@ -41,14 +51,18 @@ thread.start()
 
 try:
     while True:
+        while arduino.readline() != "readCamera":
+            pass
         with mutex:
             # skeleton, print or listen with the arduino
-
+            switch(arduino.readLine)
             #harmed victim 3 kit
             #stable victim 2 kit
             #unarmed victim 0 kit
-
-            print(letter_reading)
+            if letter_reading[0] == "_":
+                arduino.write(bytes(letter_reading[1], 'utf-8'))
+            else:
+                arduino.write(bytes(letter_reading[0], 'utf-8'))
 except KeyboardInterrupt:
     print('KeyboardInterrupt in main thread')
     pass
