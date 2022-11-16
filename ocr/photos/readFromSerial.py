@@ -1,7 +1,7 @@
 import serial
 import time
 
-arduino = serial.Serial(port='COM4', baudrate=115200, timeout)
+arduino = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=1)
 
 def write_read(x):
     arduino.write(bytes(x, 'utf-8'))
@@ -10,6 +10,6 @@ def write_read(x):
     return data
 
 while True:
-    num = input("Number: ")
-    value = write_read(num)
+    tipoFoto = input("Tipo foto: ")
+    value = write_read(tipoFoto).decode('UTF-8')
     print(value)

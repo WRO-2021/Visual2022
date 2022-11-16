@@ -10,8 +10,7 @@ import sys
 sys.path.append('../')
 # import my own modules from the parent directory
 
-from ocr.photos.ImageFromCamera import capture
-from ocr.photos.checCameras import returnCameraIndexes
+from ocr.photos.ImageFromCamera import capture, returnCameraIndexes
 # from sklearn import preprocessing  # label encoder, non so se devo importarlo prima di caricare con pickle
 from ocr.neuralnetwork.CNN import NeuralNetwork
 
