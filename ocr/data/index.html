@@ -26,6 +26,7 @@
     <br>
     <br>
     <button onclick="download()">download json</button>
+    <button onclick="saveOnServer()">save on server</button>
     <br>
     <br>
     <button onclick="setLato('L')">left</button>
@@ -131,6 +132,19 @@
             let n = document.querySelector('#image_number');
             num = n.value;
             loadImg();
+        }
+
+        function  saveOnServer(){
+            //make a post request to the server at the page save.php
+            let url = 'save.php';
+            let data = JSON.stringify(data);
+            fetch(url, {
+                method: 'POST',
+                body: data
+            }).then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                })
         }
     </script>
 </body>
