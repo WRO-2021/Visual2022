@@ -137,10 +137,9 @@
         function  saveOnServer(){
             //make a post request to the server at the page save.php
             let url = 'save.php';
-            let data = JSON.stringify(data);
             fetch(url, {
                 method: 'POST',
-                body: data
+                body: JSON.stringify(data)
             }).then(response => response.json())
                 .then(data => {
                     console.log('Success:', data);
