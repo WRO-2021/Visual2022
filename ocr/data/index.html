@@ -80,8 +80,6 @@
 
         function setImageName(name){
             document.getElementById("image_name").innerHTML = name;
-            document.getElementById("image_number").style.height = "200px";
-            document.getElementById("image_number").style.width = "200px";
         }
 
         //file upload
@@ -112,6 +110,8 @@
             console.log(filename);
             let img = document.querySelector('img');
             img.src = filename;
+            img.style.height = '200px';
+            img.style.width = '200px';
             setImageName(filename);
             if (data[filename] != undefined){
                 setImageStatus(true);
