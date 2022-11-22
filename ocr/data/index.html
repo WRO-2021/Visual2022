@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<!--
+    formato immagini(nome file): lato + numero + .png
+    lato: L o R
+    numero: da 1 in su
+
+    copyright 2022 Samuele Facenda
+-->
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Image catalogger</h1>
+    <img alt="image">
+    <br>
+    <br>
+    <button onclick="isLetter('h')">h</button>
+    <button onclick="isLetter('s')">s</button>
+    <button onclick="isLetter('u')">u</button>
+    <button onclick="isLetter('none')">none</button>
+    <br>
+    <br>
+    <button onclick="download()">download json</button>
+    <br>
+    <br>
+    <button onclick="setLato('L')">left</button>
+    <button onclick="setLato('R')">right</button>
+    <br>
+    <br>
+    <div id="image_status"></div>
+    <div id="image_name"></div>
+    <br>
+    <br>
+    <form id="upload">
+        <label for="file">File to upload</label>
+        <input type="file" id="file" accept=".json">
+        <button>Upload</button>
+    </form>
+    <br>
+    <br>
+    <input type="number" id="image_number" value="1" min="0"  onchange="changeNumber()">
+
+    <script>
+        var lato = 'L';
+        var data = {};
+        var num = 0;
+
+        function download() {
+            let filename = 'data.json';
+            let text = JSON.stringify(data);
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+        function setImageStatus(done){
+            if (done)
+                document.getElementById("image_status").innerHTML = "already processed";
+            else
+                document.getElementById("image_status").innerHTML = "not processed";
+        }
+
+        function setLato(l){
+            lato = l;
+            loadImg();
+        }
+
+        function setImageName(name){
+            document.getElementById("image_name").innerHTML = name;
+        }
+
+        //file upload
+        function logFile (event) {
+            let str = event.target.result;
+            let json = JSON.parse(str);
+            console.log('string', str);
+            console.log('json', json);
+
+            data = json;
+
+        }
+        function uploadFile(event){
+            event.preventDefault();
+            let reader = new FileReader();
+            reader.onload = logFile;
+            // Read the file
+            reader.readAsText(file.files[0]);
+        }
+
+        let form = document.querySelector('#upload');
+        let file = document.querySelector('#file');
+        form.addEventListener('submit', uploadFile);
+
+        //image processing and changing
+        function loadImg(){
+            let filename = 'images/' + lato  + num + '.png';
+            console.log(filename);
+            let img = document.querySelector('img');
+            img.src = filename;
+            setImageName(filename);
+            if (data[filename] != undefined){
+                setImageStatus(true);
+            } else {
+                setImageStatus(false);
+            }
+        }
+        function isLetter(letter){
+            let filename = 'images/' + lato  + num + '.png';
+            if (num !== 0)
+                data[filename] = letter;
+            num++;
+            let n = document.querySelector('#image_number');
+            n.value = num;
+            loadImg();
+        }
+
+        function changeNumber(){
+            //get the content of image_number
+            let n = document.querySelector('#image_number');
+            num = n.value;
+            loadImg();
+        }
+    </script>
+</body>
+</html>
