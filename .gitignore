@@ -1,4 +1,4 @@
-__pychache__/*
-__pychache__
+__pycache__/*
+__pycache__
 *.pyc
 /ocr/data/images/*.png
