@@ -1,7 +1,5 @@
 import pickle
 import threading
-import torch
-from torch import nn
 import cv2
 import sys
 sys.path.append('../ocr/photos/')
@@ -9,11 +7,10 @@ from ImageFromCamera import capture
 from checCameras import returnCameraIndexes
 
 # left and right
+# 's', 'h', 'u', 'red'...
 letter_reading = ['_', '_']
 mutex = threading.Lock()
 run_event = threading.Event()
-
-model = pickle.load(open('../neuralnetwork/nn.pickle', 'rb'))
 
 def convert_from_tensor(tensor):
     return tensor.detach().numpy()
@@ -29,9 +26,8 @@ def take_picture_and_check():
     while True:
         try:
             images = [capture(capLeft), capture(capRight)]
-            letters = [ model.predict(image) for image in images]
             with mutex:
-                letter_reading = [convert_from_tensor(letter) for letter in letters]
+                letter_reading = ['red' for letter in letters]
         except KeyboardInterrupt:
             break
         if(run_event.is_set()):

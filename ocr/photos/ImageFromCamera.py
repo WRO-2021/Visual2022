@@ -20,7 +20,6 @@ def takePicture(cap, letter='', num= 0, path = '../images/', name=None):
         cv2.imwrite(path + letter + str(num) + '.png', resized)
 
 
-
 def main():
         i = 0
         path = '../images/'
