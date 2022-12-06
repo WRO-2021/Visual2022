@@ -1,41 +1,50 @@
 import cv2
-import imutils
 import time
+from checCameras import returnCameraIndexes
 
 #sinistra L1.png ... 
 #destra L1.png ...
-i = 0
 
-path = '../images/'
+camera_indexes = returnCameraIndexes()
 
-def takePicture():
+def capture(cap, size=16):
         (grabbed, frame) = cap.read()
-        cv2.imwrite(path + 'L' + str(i) + '.png', frame)
+        return cv2.resize(frame, (size, size))
 
-def takePicture1():
-        (grabbed, frame1) = cap1.read()
-        cv2.imwrite(path +'R' + str(i) + '.png', frame1)
+def takePicture(cap, letter='', num= 0, path = '../images/', name=None):
+        resized = capture(cap)
+        if name is None:
+                path += letter + str(num) + '.png'
+        else:
+                path += name + '.png'
+        cv2.imwrite(path + letter + str(num) + '.png', resized)
 
-cap = cv2.VideoCapture(0)
-cap1 = cv2.VideoCapture(2)
 
-while True:
-    print("cacca")
-    i += 1
 
-    takePicture()
-    takePicture1()
+def main():
+        i = 0
+        path = '../images/'
+        caps = [
+                cv2.VideoCapture(camera_indexes[0]),
+                cv2.VideoCapture(camera_indexes[1])
+        ]
+        while True:
+                try:
+                        print("cacca")
+                        i += 1
 
-    img = cv2.imread(path +'L' + str(i) + '.png')
-    resized = cv2.resize(img, (16, 16))
-    cv2.imwrite(path + 'L' + str(i) + '.png', resized)
+                
+                        takePicture(caps[0],'L', i, path)
+                        takePicture(caps[1],'R', i, path)
 
-    img1 = cv2.imread(path +'R' + str(i) + '.png')
-    resized1 = cv2.resize(img1, (16, 16))
-    cv2.imwrite(path +'R' + str(i) + '.png', resized1)
+                        time.sleep(0.5)
+                        print("culo")
+                except KeyboardInterrupt:
+                        print("KeyboardInterrupt")
+                        break
 
-    time.sleep(0.5)
-    print("culo")
+                for cap in caps:
+                        cap.release()
 
-cap.release()
-cap1.release()
+if __name__ == "__main__":
+        main()

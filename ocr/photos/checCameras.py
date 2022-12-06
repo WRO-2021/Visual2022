@@ -14,4 +14,5 @@ def returnCameraIndexes():
         i -= 1
     return arr
 
-print(returnCameraIndexes())
+if __name__ == "__main__":
+    print(returnCameraIndexes())
