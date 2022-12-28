@@ -26,6 +26,7 @@ def take_picture_and_check():
     camera_indexes = returnCameraIndexes()
     capLeft = cv2.VideoCapture(camera_indexes[0])
     capRight = cv2.VideoCapture(camera_indexes[1])
+    # capture images, use the model on the images, and then update the status
     while True:
         try:
             images = [capture(capLeft), capture(capRight)]
@@ -34,6 +35,7 @@ def take_picture_and_check():
                 letter_reading = [convert_from_tensor(letter) for letter in letters]
         except KeyboardInterrupt:
             break
+        # exit message from main thread
         if(run_event.is_set()):
             break
 
