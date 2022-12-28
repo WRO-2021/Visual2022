@@ -1,11 +1,9 @@
 import cv2
 import time
-from checCameras import returnCameraIndexes
 
 #sinistra L1.png ... 
 #destra L1.png ...
 
-camera_indexes = returnCameraIndexes()
 
 def capture(cap, size=16):
         (grabbed, frame) = cap.read()
@@ -46,4 +44,6 @@ def main():
                         cap.release()
 
 if __name__ == "__main__":
+        from checCameras import returnCameraIndexes
+        camera_indexes = returnCameraIndexes()
         main()
