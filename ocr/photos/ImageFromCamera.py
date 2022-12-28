@@ -19,8 +19,8 @@ def takePicture(cap, letter='', num= 0, path = '../images/', name=None):
 
 
 def main():
-        i = 0
-        path = '../images/'
+        i = 20
+        path = '../data/images/'
         caps = [
                 cv2.VideoCapture(camera_indexes[0]),
                 cv2.VideoCapture(camera_indexes[1])
