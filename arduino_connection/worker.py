@@ -45,7 +45,13 @@ colors = ['none', 'none']
 mutex = threading.Lock()
 run_event = threading.Event()
 
+"""
+ How this works:
+    - the main thread is the one that communicates with the arduino
+    - the other thread is the one that takes the pictures and uses the model
+"""
 
+# use the model and the encoder to get the letter from the image
 def torch_image_to_letter(img, model, encoder):
     out = model(img)[0]
     out = out.argmax(dim=0)
@@ -53,7 +59,7 @@ def torch_image_to_letter(img, model, encoder):
     out = encoder.inverse_transform(out)[0]
     return out
 
-
+# convert the image to a torch tensor(black and white)
 def image_to_torch_bw(img):
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     img = img.astype('float32')
@@ -61,14 +67,14 @@ def image_to_torch_bw(img):
     img = img.unsqueeze(0).unsqueeze(0)
     return img
 
-
+# convert the image to a torch tensor(rgb)
 def image_to_torch_rgb(img):
     img = img.astype('float32')
     img = torch.from_numpy(img)
     img = img.unsqueeze(0).permute(0, 3, 1, 2)
     return img
 
-
+# thread function
 def take_picture_and_check():
     global letters, colors
 
@@ -78,9 +84,11 @@ def take_picture_and_check():
     # capture images, use the model on the images, and then update the status
     while True:
         try:
+            # take the pictures and convert them to torch tensors
             images = [capture(cap_left), capture(cap_right)]
             bw = [image_to_torch_bw(x) for x in images]
             rgb = [image_to_torch_rgb(x) for x in images]
+            # use the model to get the letter
             letters_tmp = [torch_image_to_letter(x, model_wb, encoder_wb) for x in bw]
             colors_tmp = [torch_image_to_letter(x, model_rgb, encoder_rgb) for x in rgb]
 
@@ -88,6 +96,7 @@ def take_picture_and_check():
                 print('Qualcosa e\' cambiato!!', letters_tmp)
             if colors != colors_tmp:
                 print('Qualcosa e\' cambiato!!', colors_tmp)
+            # update the status
             with mutex:
                 letters = letters_tmp
                 colors = colors_tmp
