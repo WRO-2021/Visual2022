@@ -55,10 +55,11 @@ try:
             pass
         with mutex:
             # skeleton, print or listen with the arduino
-            switch(arduino.readLine)
             #harmed victim 3 kit
             #stable victim 2 kit
             #unarmed victim 0 kit
+            message = ""
+
             if letter_reading[0] == "_":
                 arduino.write(bytes(letter_reading[1], 'utf-8'))
             else:

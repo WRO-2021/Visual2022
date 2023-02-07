@@ -28,6 +28,16 @@ def infinity(start=0):
         i += 1
 
 
+def get_start_index(path):
+    import os
+    files = os.listdir(path)
+    if 'data.json' in files:
+        files.remove('data.json')
+    if len(files) == 0:
+        return 0
+    else:
+        return max([int(x.split('.')[0][1:]) for x in files]) + 1
+
 def main():
     path = '../data/images/'
     loading = ['|', '/', '-', '\\']
@@ -35,7 +45,9 @@ def main():
         cv2.VideoCapture(camera_indexes[0]),
         cv2.VideoCapture(camera_indexes[1])
     ]
-    for i in infinity(1):
+    start_index = get_start_index(path)
+    print(f'{start_index=}')
+    for i in infinity(start_index):
         try:
 
             takePicture(caps[0], 'L', i, path)
@@ -48,6 +60,8 @@ def main():
         except KeyboardInterrupt:
             print("KeyboardInterrupt")
             break
+
+        time.sleep(1)
 
     for cap in caps:
         cap.release()

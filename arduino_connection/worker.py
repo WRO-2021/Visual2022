@@ -4,6 +4,7 @@ import torch
 import cv2
 import numpy as np
 import time
+import serial
 
 import sys
 sys.path.append('../')
@@ -74,6 +75,7 @@ def image_to_torch_rgb(img):
     img = img.unsqueeze(0).permute(0, 3, 1, 2)
     return img
 
+
 # thread function
 def take_picture_and_check():
     global letters, colors
@@ -115,16 +117,23 @@ def take_picture_and_check():
 thread = threading.Thread(target=take_picture_and_check)
 thread.start()
 
+
+arduino = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=.1)
 try:
     while True:
+        while arduino.readline() != "readCamera":
+            pass
         with mutex:
             # skeleton, print or listen with the arduino
+            #harmed victim 3 kit
+            #stable victim 2 kit
+            #unarmed victim 0 kit
 
-            # harmed victim 3 kit
-            # stable victim 2 kit
-            # unarmed victim 0 kit
-            print(letters, colors, sep='\n')
-            time.sleep(1)
+            message = colors[1 if colors[0] == "_" else 0]
+            message += letters[1 if letters[0] == "_" else 0]
+
+            arduino.write(bytes(message, 'utf-8'))
+
 except KeyboardInterrupt:
     print('KeyboardInterrupt in main thread')
 
