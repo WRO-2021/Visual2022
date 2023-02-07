@@ -39,6 +39,9 @@ def get_start_index(path):
         return max([int(x.split('.')[0][1:]) for x in files]) + 1
 
 def main():
+    from checCameras import returnCameraIndexes
+    camera_indexes = returnCameraIndexes()
+    print(f'{camera_indexes=}')
     path = '../data/images/'
     loading = ['|', '/', '-', '\\']
     caps = [
@@ -68,7 +71,4 @@ def main():
 
 
 if __name__ == "__main__":
-    from checCameras import returnCameraIndexes
-
-    camera_indexes = returnCameraIndexes()
     main()
