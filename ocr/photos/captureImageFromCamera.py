@@ -5,7 +5,17 @@ import sys
 
 
 # sinistra L1.png ...
-# destra L1.png ...
+# destra R1.png ...
+
+def returnCameraIndexes():
+    # checks the first 10 indexes.
+    arr = []
+    for index in range(10):
+        cap = cv2.VideoCapture(index)
+        if cap.read()[0]:
+            arr.append(index)
+            cap.release()
+    return arr
 
 def capture(cap, size=28):
     (grabbed, frame) = cap.read()
@@ -39,7 +49,6 @@ def get_start_index(path):
         return max([int(x.split('.')[0][1:]) for x in files]) + 1
 
 def main():
-    from checCameras import returnCameraIndexes
     camera_indexes = returnCameraIndexes()
 
     print(f'{camera_indexes=}')
@@ -67,14 +76,11 @@ def main():
                 takePicture(cap, label, i, path)
 
             time.sleep(0.5)
-            sys.stdout.write(f'\rCapturing index {i=}, {loading[i % len(loading)]}')
-            sys.stdout.flush()
+            print(f'\rCapturing index {i=}, {loading[i % len(loading)]}', end='')
 
         except KeyboardInterrupt:
             print("KeyboardInterrupt")
             break
-
-        time.sleep(1)
 
     for cap in caps:
         cap.release()
