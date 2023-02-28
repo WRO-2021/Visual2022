@@ -55,18 +55,17 @@ def main():
     path = '../data/images/'
     loading = ['|', '/', '-', '\\']
     caps = [cv2.VideoCapture(camera_indexes[i]) for i in camera_indexes]
-    match len(caps):
-        case 0:
-            print('No camera found')
-            exit(1)
-        case 1:
-            print('Only one camera found')
-            labels = ['L']
-        case 2:
-            labels = ['L', 'R']
-        case _:
-            print('More than two cameras found')
-            exit(1)
+    if len(caps) == 0:
+        print('No camera found')
+        exit(1)
+    elif len(caps) == 1:
+        print('Only one camera found')
+        labels = ['L']
+    elif len(caps) == 2:
+        labels = ['L', 'R']
+    else:
+        print('More than two cameras found')
+        exit(1)
 
     start_index = get_start_index(path)
     print(f'{start_index=}')
