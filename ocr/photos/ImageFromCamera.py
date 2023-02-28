@@ -1,11 +1,11 @@
 import sys
 import cv2
 import time
+import sys
 
 
 # sinistra L1.png ...
 # destra L1.png ...
-
 
 def capture(cap, size=28):
     (grabbed, frame) = cap.read()
@@ -41,20 +41,30 @@ def get_start_index(path):
 def main():
     from checCameras import returnCameraIndexes
     camera_indexes = returnCameraIndexes()
+
     print(f'{camera_indexes=}')
     path = '../data/images/'
     loading = ['|', '/', '-', '\\']
-    caps = [
-        cv2.VideoCapture(camera_indexes[0]),
-        cv2.VideoCapture(camera_indexes[1])
-    ]
+    caps = [cv2.VideoCapture(camera_indexes[i]) for i in camera_indexes]
+    match len(caps):
+        case 0:
+            print('No camera found')
+            exit(1)
+        case 1:
+            print('Only one camera found')
+            labels = ['L']
+        case 2:
+            labels = ['L', 'R']
+        case _:
+            print('More than two cameras found')
+            exit(1)
+
     start_index = get_start_index(path)
     print(f'{start_index=}')
     for i in infinity(start_index):
         try:
-
-            takePicture(caps[0], 'L', i, path)
-            takePicture(caps[1], 'R', i, path)
+            for cap, label in zip(caps, labels):
+                takePicture(cap, label, i, path)
 
             time.sleep(0.5)
             sys.stdout.write(f'\rCapturing index {i=}, {loading[i % len(loading)]}')
