@@ -21,7 +21,7 @@ def returnCameraIndexes():
 def capture(cap, size=24):
     (grabbed, frame) = cap.read()
     img = cv2.resize(frame, (size, size))
-    img = cv2.equalizeHist(img)
+    #img = cv2.equalizeHist(img)
     return img
 
 
@@ -58,7 +58,7 @@ def main():
     print(f'{camera_indexes=}')
     path = '../data/images/'
     loading = ['|', '/', '-', '\\']
-    caps = [cv2.VideoCapture(camera_indexes[i]) for i in camera_indexes]
+    caps = [cv2.VideoCapture(i) for i in camera_indexes]
     if len(caps) == 0:
         print('No camera found')
         exit(1)
