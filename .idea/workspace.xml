@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1da35e4a-9df0-4302-a6bf-0d3083336a74" name="Changes" comment="aggiunto coso php">
-      <change beforePath="$PROJECT_DIR$/ocr/data/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/data/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/neuralnetwork/primaNN.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/neuralnetwork/primaNN.ipynb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/neuralnetwork/saves/labelEncoder.pickle" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/neuralnetwork/saves/labelEncoder.pickle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ocr/neuralnetwork/saves/nn.torch" beforeDir="false" afterPath="$PROJECT_DIR$/ocr/neuralnetwork/saves/nn.torch" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,21 +29,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "C:/Users/samue/IdeaProjects/Visual2022",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/samue/IdeaProjects/Visual2022&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -50,6 +57,10 @@
       <option name="presentableId" value="Default" />
       <updated>1669124316691</updated>
       <workItem from="1669124321771" duration="2222000" />
+      <workItem from="1677593133443" duration="3000" />
+      <workItem from="1681804203142" duration="77000" />
+      <workItem from="1681804282157" duration="89000" />
+      <workItem from="1681804388021" duration="9000" />
     </task>
     <task id="LOCAL-00001" summary="aggiunto coso php">
       <created>1669124629892</created>
