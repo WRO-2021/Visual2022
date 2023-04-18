@@ -19,7 +19,9 @@ def returnCameraIndexes():
 
 def capture(cap, size=28):
     (grabbed, frame) = cap.read()
-    return cv2.resize(frame, (size, size))
+    img = cv2.resize(frame, (size, size))
+    img = cv2.equalizeHist(img)
+    return img
 
 
 def takePicture(cap, letter='', num=0, path='../data/images/', name=None):
