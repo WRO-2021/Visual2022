@@ -112,30 +112,111 @@ def take_picture_and_check():
     cap_left.release()
     cap_right.release()
 
+PORT = 'ttyS0'
+
 
 thread = threading.Thread(target=take_picture_and_check)
 thread.start()
 
 
-arduino = serial.Serial(port='/dev/ttyACM0', baudrate=115200, timeout=.1)
-try:
+arduino = serial.Serial(port=PORT, baudrate=115200, timeout=.1)
+
+def wait_arduino():
+    if not arduino.is_open:
+        arduino.open()
+
     while True:
-        while arduino.readline() != "readCamera":
-            pass
-        with mutex:
-            # skeleton, print or listen with the arduino
-            #harmed victim 3 kit
-            #stable victim 2 kit
-            #unarmed victim 0 kit
+        if arduino.in_waiting > 0:
+            msg = arduino.read(1)
+            if msg == b's':
+                break
 
-            message = colors[1 if colors[0] == "_" else 0]
-            message += letters[1 if letters[0] == "_" else 0]
 
-            arduino.write(bytes(message, 'utf-8'))
+KITS = {
+    'h': b'3',
+    's': b'2',
+    'n': b'0',
+    'red': b'2',
+    'yellow': b'1',
+    'green': b'0',
+}
 
-except KeyboardInterrupt:
-    print('KeyboardInterrupt in main thread')
+"""
+arduino code for the communication
 
-# exit the thread
-run_event.set()
-thread.join()
+init {
+
+    Serial1.begin(115200);
+    Serial1.print("s");
+    Serial1.flush();
+}
+
+void victim(){
+    Serial1.println("?");
+    Serial1.flush();
+    while(Serial1.available() == 0);
+    String msg = Serial1.readStringUntil('\n');
+    msg.trim();
+    Serial1.flush();
+
+    if (msg[0] != 'N'){
+        if (msg[0] == 'L'){
+            //left
+            turn_left();
+        } else {
+            //right
+            turn_right();
+        }
+
+        int n_kits = msg[1] - '0';
+        found_victim(n_kits);
+    }
+}
+}
+"""
+    
+
+def watch_and_communicate():
+    try:
+        while True:
+            while arduino.readline().strip() != "?":
+                pass
+            with mutex:
+                # skeleton, print or listen with the arduino
+                #harmed victim 3 kit
+                #stable victim 2 kit
+                #unarmed victim 0 kit
+
+                message = b'N'
+
+                if colors[0] != 'none':
+                    message = b'L' + KITS[colors[0]]
+                elif colors[1] != 'none':
+                    message = b'R' + KITS[colors[1]]
+                elif letters[0] != 'none':
+                    message = b'L' + KITS[letters[0]]
+                elif letters[1] != 'none':
+                    message = b'R' + KITS[letters[1]]
+
+                message += b'\n'
+
+                arduino.write(bytes(message, 'utf-8'))
+
+    except KeyboardInterrupt:
+        print('KeyboardInterrupt in main thread')
+
+    # exit the thread
+    run_event.set()
+    thread.join()
+
+while True:
+    try:
+        wait_arduino()
+        watch_and_communicate()
+    except KeyboardInterrupt:
+        print('KeyboardInterrupt in main thread')
+        break
+    except:
+        print('Unexpected error:', sys.exc_info()[0])
+        print('Restarting...')
+        time.sleep(1)
