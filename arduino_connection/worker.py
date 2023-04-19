@@ -127,8 +127,7 @@ def wait_arduino():
 
     while True:
         if arduino.in_waiting > 0:
-            msg = arduino.read(1)
-            if msg == b's':
+            if arduino.read(1) == b's'and arduino.read(1) == b't' and arduino.read(1) == b'a':
                 break
 
 
@@ -147,7 +146,7 @@ arduino code for the communication
 init {
 
     Serial1.begin(115200);
-    Serial1.print("s");
+    Serial1.print("sta");
     Serial1.flush();
 }
 
