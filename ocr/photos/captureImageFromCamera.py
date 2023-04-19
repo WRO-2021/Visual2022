@@ -17,7 +17,8 @@ def returnCameraIndexes():
             cap.release()
     return arr
 
-def capture(cap, size=28):
+
+def capture(cap, size=24):
     (grabbed, frame) = cap.read()
     img = cv2.resize(frame, (size, size))
     img = cv2.equalizeHist(img)
@@ -49,6 +50,7 @@ def get_start_index(path):
         return 0
     else:
         return max([int(x.split('.')[0][1:]) for x in files]) + 1
+
 
 def main():
     camera_indexes = returnCameraIndexes()

@@ -19,7 +19,7 @@ class NeuralNetwork(nn.Module):
 
         self.linear_layers = nn.Sequential(
             # https://madebyollin.github.io/convnet-calculator/
-            nn.Linear(800, numLabel),
+            nn.Linear(450, numLabel),
             nn.LogSoftmax(dim=1)
         )
         self.flatten = nn.Flatten(start_dim=1)
