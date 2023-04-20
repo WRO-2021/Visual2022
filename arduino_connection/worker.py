@@ -1,6 +1,6 @@
 import pickle
 import threading
-import torch
+#import torch
 import cv2
 import numpy as np
 import time
@@ -12,7 +12,8 @@ sys.path.append('../')
 
 from ocr.photos.ImageFromCamera import capture, returnCameraIndexes
 # from sklearn import preprocessing  # label encoder, non so se devo importarlo prima di caricare con pickle
-from ocr.neuralnetwork.CNN import NeuralNetwork
+
+#from ocr.neuralnetwork.CNN import NeuralNetwork
 
 # https://stackoverflow.com/questions/15457786/ctrl-c-crashes-python-after-importing-scipy-stats
 import os
@@ -21,7 +22,7 @@ os.environ['FOR_DISABLE_CONSOLE_CTRL_HANDLER'] = '1'
 # se non riesce a fare le foto il raspberry:
 # >sudo rmmod uvcvideo
 # >sudo modprobe uvcvideo nodrop=1 timeout=5000 quirks=0x80
-
+"""
 N_LABELS = 4
 
 SAVES = '../ocr/neuralnetwork/'
@@ -38,7 +39,7 @@ model_wb.eval()
 model_rgb = NeuralNetwork(N_LABELS, False)
 model_rgb.load_state_dict(torch.load(SAVES + 'nnColor.torch'))
 model_rgb.eval()
-
+"""
 # left and right
 letters = ['none', 'none']
 colors = ['none', 'none']
@@ -50,7 +51,7 @@ run_event = threading.Event()
     - the main thread is the one that communicates with the arduino
     - the other thread is the one that takes the pictures and uses the model
 """
-
+"""
 # use the model and the encoder to get the letter from the image
 def torch_image_to_letter(img, model, encoder):
     out = model(img)[0]
@@ -73,7 +74,12 @@ def image_to_torch_rgb(img):
     img = torch.from_numpy(img)
     img = img.unsqueeze(0).permute(0, 3, 1, 2)
     return img
+"""
 
+def is_something(img):
+    var = int(np.var(img))
+    print(str(var).zfill(6), '#' * (var // 100))
+    return var
 
 # thread function
 def take_picture_and_check():
@@ -87,6 +93,7 @@ def take_picture_and_check():
         try:
             # take the pictures and convert them to torch tensors
             images = [capture(cap_left), capture(cap_right)]
+            """
             bw = [image_to_torch_bw(x) for x in images]
             rgb = [image_to_torch_rgb(x) for x in images]
             # use the model to get the letter
@@ -101,6 +108,11 @@ def take_picture_and_check():
             with mutex:
                 letters = letters_tmp
                 colors = colors_tmp
+            """
+            new_colors = [('yellow' if is_something(x) else 'none') for x in images]
+            with mutex:
+                colors = new_colors
+                
         except KeyboardInterrupt:
             print('KeyboardInterrupt in thread')
             break
@@ -125,6 +137,8 @@ def wait_arduino():
     if not arduino.is_open:
         arduino.open()
 
+    arduino.write(b'sta')
+
     while True:
         if arduino.in_waiting > 0:
             if arduino.read(1) == b's'and arduino.read(1) == b't' and arduino.read(1) == b'a':
@@ -139,46 +153,12 @@ KITS = {
     'yellow': b'1',
     'green': b'0',
 }
-
-"""
-arduino code for the communication
-
-init {
-
-    Serial1.begin(115200);
-    Serial1.print("sta");
-    Serial1.flush();
-}
-
-void victim(){
-    Serial1.println("?");
-    Serial1.flush();
-    while(Serial1.available() == 0);
-    String msg = Serial1.readStringUntil('\n');
-    msg.trim();
-    Serial1.flush();
-
-    if (msg[0] != 'N'){
-        if (msg[0] == 'L'){
-            //left
-            turn_left();
-        } else {
-            //right
-            turn_right();
-        }
-
-        int n_kits = msg[1] - '0';
-        found_victim(n_kits);
-    }
-}
-}
-"""
     
 
 def watch_and_communicate():
     try:
         while True:
-            while arduino.readline().strip() != "?":
+            while not arduino.in_waiting or arduino.read() != b"?":
                 pass
             with mutex:
                 # skeleton, print or listen with the arduino
@@ -186,18 +166,20 @@ def watch_and_communicate():
                 #stable victim 2 kit
                 #unarmed victim 0 kit
 
-                message = b'N'
+                left = b'N0'
+                right = b'N0'
 
                 if colors[0] != 'none':
-                    message = b'L' + KITS[colors[0]]
-                elif colors[1] != 'none':
-                    message = b'R' + KITS[colors[1]]
-                elif letters[0] != 'none':
-                    message = b'L' + KITS[letters[0]]
+                    left = b'S' + KITS[colors[0]]
+                else letters[1] != 'none':
+                    left = b'S' + KITS[letters[0]]
+                    
+                if colors[1] != 'none':
+                    right = b'S' + KITS[colors[1]]
                 elif letters[1] != 'none':
-                    message = b'R' + KITS[letters[1]]
+                    right = b'S' + KITS[letters[1]]
 
-                message += b'\n'
+                message = left + right + b'\n'
 
                 arduino.write(bytes(message, 'utf-8'))
 
