@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 import time
 import serial
+import traceback
 
 import sys
 sys.path.append('../')
@@ -81,8 +82,8 @@ def image_to_torch_rgb(img):
 
 def is_something(img):
     var = int(np.var(img))
-    print(str(var).zfill(6), '#' * (var // 100))
-    return var
+    #print(str(var).zfill(6), '#' * (var // 100))
+    return var > 1500
 
 # thread function
 def take_picture_and_check():
@@ -134,18 +135,19 @@ thread = threading.Thread(target=take_picture_and_check)
 thread.start()
 
 
-arduino = serial.Serial(port=PORT, baudrate=115200, timeout=.1)
+arduino = serial.Serial(port=PORT, baudrate=9600, timeout=.1)
 
 def wait_arduino():
     print('waiting')
     if not arduino.is_open:
         arduino.open()
+    print('opened')
 
     arduino.write(b'sta')
     print('connecting')
 
     while True:
-        if arduino.in_waiting > 0:
+        if arduino.in_waiting >= 3:
             if arduino.read(1) == b's'and arduino.read(1) == b't' and arduino.read(1) == b'a':
                 print('connected!')
                 break
@@ -164,8 +166,16 @@ KITS = {
 def watch_and_communicate():
     try:
         while True:
-            while not arduino.in_waiting or arduino.read() != b"?":
-                pass
+            # wait request
+            while True:
+                if arduino.in_waiting:
+                    msg = arduino.read(1)
+                    if msg == b'?':
+                        break
+                    else:
+                        print('Wrong msg: ', msg)
+            print('Recived')
+            # respond
             with mutex:
                 # skeleton, print or listen with the arduino
                 #harmed victim 3 kit
@@ -185,9 +195,12 @@ def watch_and_communicate():
                 elif letters[1] != 'none':
                     right = b'S' + KITS[letters[1]]
 
-                message = left + right + b'\n'
+                message = b'!' + left + right + b'\n'
 
-                arduino.write(bytes(message, 'utf-8'))
+                print('Message: ', message)
+
+            arduino.flush()
+            arduino.write(message)
 
     except KeyboardInterrupt:
         print('KeyboardInterrupt in main thread')
@@ -205,5 +218,6 @@ while True:
         break
     except:
         print('Unexpected error:', sys.exc_info()[0])
+        traceback.print_exc()
         print('Restarting...')
         time.sleep(1)
