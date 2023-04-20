@@ -10,7 +10,7 @@ import sys
 sys.path.append('../')
 # import my own modules from the parent directory
 
-from ocr.photos.ImageFromCamera import capture, returnCameraIndexes
+from ocr.photos.captureImageFromCamera import capture, returnCameraIndexes
 # from sklearn import preprocessing  # label encoder, non so se devo importarlo prima di caricare con pickle
 
 #from ocr.neuralnetwork.CNN import NeuralNetwork
@@ -21,6 +21,9 @@ os.environ['FOR_DISABLE_CONSOLE_CTRL_HANDLER'] = '1'
 
 # se non riesce a fare le foto il raspberry:
 # >sudo rmmod uvcvideo
+import subprocess
+subprocess.run(['sudo', 'rmmod', 'uvcvideo'])
+subprocess.run(['sudo', 'modprobe', 'uvcvideo', 'nodrop=1', 'timeout=5000', 'quirks=0x80'])
 # >sudo modprobe uvcvideo nodrop=1 timeout=5000 quirks=0x80
 """
 N_LABELS = 4
@@ -124,7 +127,7 @@ def take_picture_and_check():
     cap_left.release()
     cap_right.release()
 
-PORT = 'ttyS0'
+PORT = '/dev/ttyS0'
 
 
 thread = threading.Thread(target=take_picture_and_check)
@@ -134,14 +137,17 @@ thread.start()
 arduino = serial.Serial(port=PORT, baudrate=115200, timeout=.1)
 
 def wait_arduino():
+    print('waiting')
     if not arduino.is_open:
         arduino.open()
 
     arduino.write(b'sta')
+    print('connecting')
 
     while True:
         if arduino.in_waiting > 0:
             if arduino.read(1) == b's'and arduino.read(1) == b't' and arduino.read(1) == b'a':
+                print('connected!')
                 break
 
 
@@ -171,7 +177,7 @@ def watch_and_communicate():
 
                 if colors[0] != 'none':
                     left = b'S' + KITS[colors[0]]
-                else letters[1] != 'none':
+                elif letters[1] != 'none':
                     left = b'S' + KITS[letters[0]]
                     
                 if colors[1] != 'none':
