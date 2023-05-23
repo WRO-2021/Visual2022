@@ -97,3 +97,5 @@ Algoritmi, strutture dati astratte o concrete comode:
 ## 4 - Movimenti
 
 ## 5 - Note finali
+
+[Codice sorgente](https://github.com/WRO-2021/Visual2022/blob/main/piccola_guida.md)
