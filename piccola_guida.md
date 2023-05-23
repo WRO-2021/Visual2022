@@ -60,9 +60,39 @@ Con python semplice o qualunque altro linguaggio si possono usare in thread ([li
 
 ## 2 - Riconoscimento delle vittime
 
+Il riconosciemento è molto complicato, consiglio principalmente di usare [opencv](https://opencv.org/) per tutto ciò che ci sta intorno (cattura immagini, filtri alle immagini...).
+Va molto bene anche per il riconosciemento vero e proprio. [Qui](https://pyimagesearch.com/) ci sono un po' di corsi e tutorial per imparare a fare object detection e OCR (optical character recognition). Tutto questo è visione artificiale. 
 
+### 2.1 Deep learning
+
+Usare delle reti neurali può essere una buona idea per catalogare le immagini, la cosa complicata è catturare tante immagini e catalogarle a mano per trainale i modelli. 
+
+Per cominciare e capire un po' di cosa si tratta:
+[Questi](https://www.3blue1brown.com/topics/neural-networks) video sono i migliori esistenti per capire il tema, già solo con il primo si ha una visione più chiara. [Questo](https://www.3blue1brown.com/lessons/convolutions) invece è un po' più avanzato sul riconoscimento delle immagini con reti neurali, sempre di 3blue1brown (i suoi video sono fatti benissimo anche di altri temi, il suo canale youtube è molto famoso).
+
+Per la realizzazione vera e propria ci sono due framework molto famosi:
+- [Pytorch](https://pytorch.org/) è di facebook ed è molto diffusa come libreria. [Qui](https://pytorch.org/tutorials/beginner/basics/quickstart_tutorial.html) c'è un tutorial veloce per le basi e il codice boilerplate.
+Comunque per fare questo tipo di sviluppo è molto comodo usare [Jupyter notebook](https://jupyter.org/) invece di semplici script python, sono supportati in vscode e anche in Dataspell, un ide a pagamento (non se hai il [github student developer pack](https://education.github.com/pack)) molto avanzato. Con il github student developer pack hai anche [github copilot](https://github.com/features/copilot), che è comodissimo.
+- [Keras](https://keras.io/), che è un frontend molto comodo per tensorflow (di google) e altre librerie per il deep learning. 
+
+Altre librerie molto comode sono [sklearn](https://scikit-learn.org/stable/) per machine learning è utilità varie, [numpy](https://numpy.org/) e [pandas](https://pandas.pydata.org/) per data analysis e utilizzo veloce di matrici e array in python.
+
+Comunque in [questa](https://github.com/WRO-2021/Visual2022) repo ci sono i codice per l'anno 2022-2023. Li ho scritti io, per contattarmi la mia mail è questa: samuele.facenda@gmail.com.
 
 ## 3 - Mappatura e esplorazione
+
+Qui servono le cose che impari alle olimpiadi di informatica, quindi strutture dai e algoritmi. 
+In generale, per salvare la mappa si può usare una matrice gigante (non ridimensionabile) o un [grafo](https://it.wikipedia.org/wiki/Teoria_dei_grafi?useskin=vector).
+
+Algoritmi, strutture dati astratte o concrete comode:
+- [Algoritmo di dijkstra](https://it.wikipedia.org/wiki/Algoritmo_di_Dijkstra)
+- [BFS](https://it.wikipedia.org/wiki/Ricerca_in_ampiezza)
+- [DFS](https://it.wikipedia.org/wiki/Ricerca_in_profondit%C3%A0)
+- [Linked list](https://en.wikipedia.org/wiki/Linked_list)
+- [Python deque - linked list](https://www.geeksforgeeks.org/deque-in-python/)
+- [C++ deque - linked list](https://en.cppreference.com/w/cpp/container/deque)
+- [Python set](https://www.w3schools.com/python/python_sets.asp)
+- [C++ set](https://en.cppreference.com/w/cpp/container/set)
 
 ## 4 - Movimenti
 
