@@ -94,9 +94,9 @@ def take_picture_and_check():
             colors_tmp = [torch_image_to_letter(x, model_rgb, encoder_rgb) for x in rgb]
 
             if letters != letters_tmp:
-                print('Qualcosa e\' cambiato!!', letters_tmp)
+                print('Qualcosa e\' cambiato(letter)!!', letters_tmp)
             if colors != colors_tmp:
-                print('Qualcosa e\' cambiato!!', colors_tmp)
+                print('Qualcosa e\' cambiato(color)!!', colors_tmp)
             # update the status
             with mutex:
                 letters = letters_tmp
@@ -161,16 +161,15 @@ void victim(){
     if (msg[0] != 'N'){
         if (msg[0] == 'L'){
             //left
-            turn_left();
+            turn_right();
         } else {
             //right
-            turn_right();
+            turn_left();
         }
 
         int n_kits = msg[1] - '0';
         found_victim(n_kits);
     }
-}
 }
 """
     
