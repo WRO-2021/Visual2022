@@ -96,6 +96,14 @@ Algoritmi, strutture dati astratte o concrete comode:
 
 ## 4 - Movimenti
 
+Per allineare il robot c'è una tecnica comoda, avendo più sensori per lato. 
+Vai un po' avanti e indietro, finché la media delle distanza dei sensori di sinistra non è uguale a quella di destra. Poi Ti allinei girando su te stesso facendo in modo che tutti i sensori laterali abbiano gli stessi valori.
+
 ## 5 - Note finali
+
+Scrivete codice pulito, che si capisca, senza duplicati. Con nomi parlanti, non importa se vengono lunghi. [Questo](https://books.google.it/books/about/Clean_code_Guida_per_diventare_bravi_art.html?id=eVzfswEACAAJ&source=kp_book_description&redir_esc=y) è un buonissimo libro per capire come fare, del più famoso clean coder. Documentate tutto, anche in modo generale, ma che ci sia qualcosa, il minimo è lasciare commenti nei codici complicati per far capire l'intento. 
+
+
+> Samuele Facenda, Trento 30/05/2023
 
 [Codice sorgente](https://github.com/WRO-2021/Visual2022/blob/main/piccola_guida.md)
